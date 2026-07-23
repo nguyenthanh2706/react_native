@@ -7,7 +7,6 @@ import IconButton from '@/components/IconButton';
 import ImageViewer from '@/components/ImageViewer';
 import domtoimage from 'dom-to-image';
 import * as ImagePicker from 'expo-image-picker';
-import * as MediaLibrary from 'expo-media-library';
 import { useEffect, useRef, useState } from 'react';
 import { ImageSourcePropType, Platform, StyleSheet, View } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
@@ -29,7 +28,7 @@ export default function Index() {
     if (!permissionResponse?.granted) {
       requestPermission();
     }
-  }, []);
+  }, [permissionResponse?.granted, requestPermission]);
 
   const pickImageAsync = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
@@ -66,6 +65,7 @@ export default function Index() {
           quality: 1,
         });
 
+        const MediaLibrary = await import('expo-media-library');
         await MediaLibrary.saveToLibraryAsync(localUri);
         if (localUri) {
           alert('Saved!');
